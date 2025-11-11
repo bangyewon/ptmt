@@ -12,8 +12,9 @@ int strcom(const char *s1, const char *s2) {
 }
 
 int existFile(char *filePath) {
-	// 해당 부분 if 실행안됨 확인필요 ->파일 이름이 아닌 경로로 비교해서 0으로 return
-	if (strcom(filePath,"whiteList.conf") == 0) {
+	const char *filename = "whiteList.conf";
+
+	if(access(filename,F_OK) == 0) {
 		return 1;
 	}
 	return 0;
@@ -34,16 +35,15 @@ int main() {
         if(strcom(cwd,"/home/byewon/Desktop/ptmt") == 0) {
                 printf("해당 경로에 위치해 있습니다.: %s\n",cwd);
 		// whiteList.conf가 해당 경로에 있는지 확인
-		if(existFile(cwd) == true) {
+		if(existFile(cwd) == 1) {
 			printf("whiteList.conf파일이 있습니다.\n");
 		}
 		else {
 			char answer;
-			printf("%d\n",existFile(cwd)); // existFile(cwd) 디버깅 용
+
 			printf("whiteList.conf파일이 없습니다.\n");
-			//왜 문자를 두번 눌러야 진행되는가 ?
-			printf("whiteList.conf파일을 만들까요? (y / n)");
-			scanf("%c\n", &answer);
+			printf("whiteList.conf파일을 만들까요? (y / n): ");
+			scanf("%c", &answer);
 			if(answer == 'y'|| answer == 'Y') {
 				printf("파일을 생성하는 중입니다.");
 				FILE *newFile = fopen("whiteList.conf","w+");
@@ -60,6 +60,9 @@ int main() {
                 printf("현재 다른 경로에 위치해 있습니다.: %s\n",cwd);
 
         }
+
+	// whiteList.conf에 ip 넣었으면 해당 ip -> ipset에 등록
+	
         return 0;
 }
 

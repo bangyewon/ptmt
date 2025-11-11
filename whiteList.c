@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
-
+#include "ipset.h"
 int strcom(const char *s1, const char *s2) {
 	while(*s1 && *s2) {
 		if(*s1 != *s2)
@@ -60,9 +60,14 @@ int main() {
                 printf("현재 다른 경로에 위치해 있습니다.: %s\n",cwd);
 
         }
-
-	// whiteList.conf에 ip 넣었으면 해당 ip -> ipset에 등록
-	
+	char ans;
+	printf("다했으면 Y : \n");
+	scanf("%c",&ans);
+	if(ans == 'Y') {
+		printf("\n");
+		printf("ip를 넣는중 ~\n");
+		registerIp("whiteList.conf");
+	}
         return 0;
 }
 

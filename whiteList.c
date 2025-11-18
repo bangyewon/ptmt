@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "ipset.h"
+#include "./ipset.h"
 int strcom(const char *s1, const char *s2) {
 	while(*s1 && *s2) {
 		if(*s1 != *s2)

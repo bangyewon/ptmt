@@ -13,6 +13,11 @@ authlog파일 기반 ip대역 추출 후 자동차단 프로그램
 - `whiteList.conf` 파일에서 IP를 자동으로 읽어 처리
 - 불필요한 공백 및 개행문자 자동 제거(trim)
 - ipset 명령(`ipset add whitelist <IP>`) 자동 실행
+
+## ptmt-collector (auth.log 실시간 감시 및 로그 수집기)
+- inotify(IN_MODIFY) 기반 실시간 auth.log append 감지
+- 새로 추가된 라인만 추출하여 별도 파일로 저장
+- Makefile 기반 자동 빌드 및 /usr/local/bin/ptmt-collector 명령으로 실행
 ---
 
 # 🛠️ First-Time Setup (첫 사용 시 필수 설정)
@@ -30,3 +35,12 @@ sudo ipset create whitelist hash:ip
 gcc ipset.c whiteList.c -o whiteList
 sudo ./whiteList
 ```
+## 🔧 3. ptmt-collector Setup & Usage
+```bash
+sudo apt install build-essential
+sudo make install
+make run
+sudo ptmt-collector
+```
+
+

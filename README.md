@@ -37,8 +37,7 @@ sudo ./whiteList
 ```
 ## 🔧 3. ptmt-collector Setup & Usage
 ```bash
-sudo apt install build-essential
-sudo make install
+sudo apt install make
 make run
 sudo ptmt-collector
 ```

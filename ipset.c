@@ -5,7 +5,7 @@
 
 int addIp(const char *ip) {
 	char cmd[256];
-	snprintf(cmd,sizeof(cmd), "ipset add whiteist %s",ip);
+	snprintf(cmd,sizeof(cmd), "ipset add whitelist %s",ip);
 	int success = system(cmd);
 	printf("%s\n",ip); //디버깅용
 	return (success == 0);

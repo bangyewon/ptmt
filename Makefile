@@ -16,5 +16,8 @@ run: build
 	@echo "[INFO] Running $(TARGET) (needs sudo for /var/log/auth.log)"
 	sudo ./$(TARGET)
 
+install: $(TARGET)
+		sudo cp $(TARGET) /usr/local/bin/ptmt-collector
+
 clean:
 	rm -f $(TARGET)

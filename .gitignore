@@ -1,0 +1,11 @@
+# 바이너리, 빌드 파일
+authInotifyIp
+searchLog
+*.out
+
+# 로그 파일
+logwatcher/*.log
+
+*.tmp
+*.swp
+

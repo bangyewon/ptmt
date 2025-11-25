@@ -1,6 +1,7 @@
 # 바이너리, 빌드 파일
 authInotifyIp
 searchLog
+riskEngine
 *.out
 
 # 로그 파일

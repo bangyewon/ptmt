@@ -20,13 +20,13 @@ int existFile(char *filePath) {
 	return 0;
 }
 
-int main() {
+int checkFile() {
         /**
          * 사용자가 /etc경로에 있는지 확인 -(파일열기) ->  whitelist.conf가 있는
 지 없는지 확인 
          * 있으면 파일 읽어서 ipset에 저장
          * 없으면 새로 생성
-         */ 
+         ‘trim’; have ‘c*/ 
         char *cwd; 
         char wd[BUFSIZ];
 
@@ -68,6 +68,6 @@ int main() {
 		printf("ip를 넣는중 ~\n");
 		registerIp("whiteList.conf");
 	}
-        return 0;
+        return 1;
 }
 

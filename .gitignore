@@ -1,8 +1,18 @@
-# 바이너리, 빌드 파일
+# 실행 파일
 authInotifyIp
 searchLog
 riskEngine
+test_eventscore
+test_*
+
+# 테스트 파일
+eventScore_test.c 
+
+# 컴파일 
 *.out
+*.o
+*.a
+a.out
 
 # 로그 파일
 logwatcher/*.log

@@ -1,25 +1,39 @@
-/* enum + 함수 선언 */
-
 #ifndef EVENT_SCORE_H
 #define EVENT_SCORE_H
 
-typedef enum { /* 이벤트 타입 정리 */
-    EVT_FAILED_PASSWORD = 0, /* ssh 비밀번호 실패*/
-    EVT_INVALID_USER, /* 없는 사용자로 로그인 시도 */
-    EVT_FAILED_PUBLICKEY, /* 공개키 인증 실패 */
-    EVT_MAX_AUTH_EXCEEDED, /* 최대 인증 횟수 초과 */
-    EVT_ACCEPTED_PASSWORD, /* 비밀번호 로그인 성공 */
-    EVT_ACCEPTED_PUBLICKEY, /* 키 로그인 성공 */
-    EVT_ROOT_LOGIN, /* root 로그인 성공 (경고성 이벤트) */
-    EVT_OTHER, /* 기타 */
-    EVT_TYPE_COUNT      // 마지막: 배열 크기 용
+// 이벤트 타입 정의
+typedef enum {
+    EVT_UNKNOWN = 0,
+    EVT_FAILED_PASSWORD,
+    EVT_INVALID_USER,
+    EVT_ACCEPTED_PASSWORD,
+    EVT_OTHER_AUTHFAIL,   // 기타
 } EventType;
 
-/* enum 기반 점수 계산 */
+// 이벤트 타입 → 문자열 매핑
+const char *event_type_to_string(EventType type);
+
+// 문자열 → EventType enum
+EventType parse_event_type(const char *event_type_str);
+
+// 이벤트 타입 → 베이스 점수
 int get_base_score(EventType type);
 
-/* 문자열(event_type) → enum 매핑 (문자열을 받았을 때 사용) */
-EventType parse_event_type(const char *s);
+// 로그 파싱 결과 구조체
+typedef struct {
+    char ip[64];               // 파싱된 IP
+    char event_type_str[64];   // 이벤트 타입
+    EventType type;            // enum 값
+    int base_score;            // 이벤트 타입에 매칭된 점수
+} EventScoreResult;
+
+int eventscore_parse_line(const char *line, EventScoreResult *out);
+
+int eventscore_process_file(
+    const char *filename,
+    void (*callback)(const EventScoreResult *res, void *user_data),
+    void *user_data
+);
 
 #endif
 

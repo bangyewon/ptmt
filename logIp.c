@@ -1,9 +1,11 @@
 #include <stdio.h>
-#include <unistd.h>
+#include <string.h>
+#include <ctype.h>
 
 #define MAX_LINE
 // 국가별ip와 ip-lines.log비교 -> 어떤 국가인지 판단 
-char *trim(const char *str) {
+int checkCountry(const char *targetIp);
+char *trim(char *str) {
         char *end;
 
         while(isspace(*str)) {
@@ -64,7 +66,7 @@ int loadIpset(char ipsetIps[][50], int max) {
 // ip-lines.log에서 ip추출 후 whiteList와 비교
 // 이거 어디서 연결할꺼임 ?.. 
 int extractIp(const char *filename) {
-	FILE *fp = fopen(filename,"r");
+	FILE *fp = fopen(*filename,"r");
 
 	char line[1024];
 	if(fp == NULL) {
@@ -72,7 +74,7 @@ int extractIp(const char *filename) {
 		return 1;
 	}
 
-	char ipsetIps[100][100];
+	char ipsetIps[100][50];
 	int ipsetCount = loadIpset(ipsetIps,100);
 	
 	while(fgets(line,sizeof(line),fp)) {
@@ -112,44 +114,47 @@ int extractIp(const char *filename) {
 	return 0;
 }
 
+int range(int t[4], int s[4], int e[4]) {
+	for(int i = 0; i < 4; i++) {
+		if(t[i] < s[i]) return 0;
+		if(t[i] > e[i]) return 0;
+
+		if(t[i] > s[i] && t[i] < e[i]) return 1;
+	}
+	return 1;
+}
+
 // 국가 ip에 해당하는지 판단
 // log에서 추출한 ip로 extractIp에서 호출
 int checkCountry(const char *targetIp) {
-	 FILE *fp = fopen(filename,"r"); 
+	stdin *fileno = "country.csv";
+	 FILE *fp = fopen(fileno,"r"); 
          
          if(fp == NULL) {
                  printf("파일을 열 수 없어요.\n");
                  return -1; 
  	 }
 
+	 int t[4];
+	 sscanf(targetIp,"%d.%d.%d.%d",&t[0],&t[1],&t[2],&t[3]);
+
 	 char line[500];
-	 char country[100], start[50], end[50];
-// 문자열 비교만으로는 안되려나 
-	 unsigned int a,b,c,d;
-	 sscanf(targetIp, "%u.%u.%u.%u", &a,&b,&c,&d);
-	 unsigned long target = ((unsigned long)a << 24) |((unsigned long)b << 16) | ((unsigned long)c << 8) | ((unsigned long)d;
+	 char country[100],start[50],end[50];
 
-	 fgets(line,sizeof(line),fp);
-	 // 국가ip파일읽기-> 변환
 	 while(fgets(line,sizeof(line),fp)) {
-	 	sscanf(line,"%[^,],%[^,],%s", country,start,end);
+	 	sscanf(line,"%[^,],%[^,],%s",country,start,end);
 
-		unsigned int sa,sb,sc,sd;
-          	sscanf(start, "%u.%u.%u.%u", &sa,&sb,&sc,&d);
-          	unsigned long targetStart = ((unsigned long)sa << 24) |((unsigned long)sb << 16) | ((unsigned long)sc << 8) | ((unsigned long)sd;
-	 
-		unsigned int ba,bb,bc,bd;
-  	        sscanf(end, "%u.%u.%u.%u", &ba,&bb,&bc,&bd);
-        	unsigned long targetEnd = ((unsigned long)ba << 24) |((unsigned long)bb << 16) | ((unsigned long)bc << 8) | ((unsigned long)bd;
+		int s[4],e[4];
+		sscanf(start,"%d.%d.%d.%d",&s[0],&s[1],&s[2],&s[3]);
 
-		if(targetIp >= targetStart && targetIp <= targetEnd) {
-			printf("%s는 [%s] 대역에 포함됨 (%s ~ %s) \n", targetIp,country,start,end);
+		sscanf(end,"%d.%d.%d.%d",&e[0],&e[1],&e[2],&e[3]);
+
+		if(range(t,s,e)) {
+			printf("%s는 [%s] 대역에 포함되어 있음",targetIp,country);
 			fclose(fp);
-			return q;
+			return 1;
 		}
 	 }
 	 fclose(fp);
-	 return 0;
-
-	
+	 return 0;	
 }

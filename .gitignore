@@ -2,11 +2,13 @@
 authInotifyIp
 searchLog
 riskEngine
+risk_test
 test_eventscore
 test_*
 
 # 테스트 파일
 eventScore_test.c 
+riskEngine_test.c
 
 # 컴파일 
 *.out

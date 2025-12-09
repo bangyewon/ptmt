@@ -32,7 +32,7 @@ int checkFile() {
 
         cwd = getcwd(wd,sizeof(wd));
 	// 현재 위치경로 어디인지 확인 -> 임의로 현재경로로 비교함
-        if(strcom(cwd,"/home/byewon/Desktop/ptmt") == 0) {
+        if(strcom(cwd,"/home/ubuntu/바탕화면/ptmt-main") == 0) {
                 printf("해당 경로에 위치해 있습니다.: %s\n",cwd);
 		// whiteList.conf가 해당 경로에 있는지 확인
 		if(existFile(cwd) == 1) {

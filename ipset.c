@@ -44,7 +44,7 @@ int registerIp(const char *filename) {
 		if(strlen(trimmed) > 0) {
 			printf("%s\n",trimmed);
 			}
-		addIp(line);
+		addIp(trimmed);
 		}
 	printf("ip등록 완료"); //디버깅용
 	

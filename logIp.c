@@ -1,32 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-
+#include "./ipset.h"
 // 함수 선언
 int checkCountry(const char *targetIp);
-char *trim(char *str);
 int isIp(const char *str);
 int loadIpset(char ipsetIps[][50], int max);
 int extractIp(const char *filename);
 int in_range(int t[4], int s[4], int e[4]);
-
-// trim 함수
-char *trim(char *str) {
-    char *end;
-
-    while (isspace((unsigned char)*str)) {
-        str++;
-    }
-
-    if (*str) {
-        end = str + strlen(str) - 1;
-        while (end > str && isspace((unsigned char)*end)) {
-            end--;
-        }
-        *(end + 1) = '\0';
-    }
-    return str;
-}
 
 // 문자열이 IP인지 검사
 int isIp(const char *str) {

@@ -32,12 +32,21 @@ sudo ipset create whitelist hash:ip
 ```
 ## 🔧 2. Run
 ```bash
-gcc main.c whiteList.c ipset.c logIp.c riskEngine.c searchLog.c eventScore.c -o main
+gcc main.c whiteList.c ipset.c logIp.c riskEngine.c eventScore.c -o main
 sudo ./main
 ```
 ## 🔧 3. ptmt-collector Setup & Usage
+- 의존 패키지 설치
 ```bash
-sudo apt install make
+sudo apt update
+sudo apt install inotify-tools make gcc -y
+```
+- 로그 저장 디렉토리 생성
+```bash
+mkdir -p logwatcher
+```
+- 빌드 및 수행
+```bash
 make run
 sudo ptmt-collector
 ```

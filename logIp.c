@@ -67,14 +67,12 @@ int extractIp(const char *filename) {
     char ipsetIps[100][50];
 
     int ipsetCount = loadIpset(ipsetIps, 100);
-    printf("debug :loadIpset 완료 : count = %d\n",ipsetCount);
     while (fgets(line, sizeof(line), fp)) {
 	char *trimmed = trim(line);
         if (strlen(trimmed) > 0) {
 
             char *ip = strtok(trimmed, " \t\n");
             while (ip != NULL) {
-		    printf("debug : 현재 ip후보 ='%s'\n",ip);
                 if (isIp(ip)) {
                     printf("추출된 ip : %s\n", ip);
 
@@ -94,7 +92,11 @@ int extractIp(const char *filename) {
                         printf("%s 는 ipset의 화이트리스트에 존재하지 않음. 위험!\n", ip);
                         printf("* * * * * \n");
                         printf("*** 어떤 국가의 ip인지 확인중 ***\n");
-                        checkCountry(ip);
+                        int countryFound = checkCountry(ip);
+			if(countryFound == 1) {
+				fclose(fp);
+				return 1;
+			}
                     }
                 }
                 ip = strtok(NULL, " \t\n");

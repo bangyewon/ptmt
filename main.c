@@ -7,6 +7,7 @@
 #include "./logIp.h"
 #include "./authInotifyIp.h"
 #include "./eventScore.h"
+#include "./riskEngine.h"
 
 void startAuthInotifyWatcher(void);
 static const char *IP_LINES_FILE = "./logwatcher/ip-lines.log";
@@ -67,8 +68,14 @@ int main() {
                res.base_score
         );
         // 여기서 logIp 호출
-	extractIp("/home/ubuntu/바탕화면/ptmt-main/logwatcher/ip-lines.log");
-        // riskEngine 호출
+	int isCountry = extractIp("/home/ubuntu/바탕화면/ptmt-main/logwatcher/ip-lines.log");
+	if(isCountry == 1) {
+		ParsedEvent ev;
+		ev.ip = res.ip;
+		// 이거 str뭐로 설정해야함 ? 그냥 보내주면 되나 ..?
+		ev.event_type_str = "COUNTRY_IP";
+		risk_engine_process_event(&ev);
+	}
     }
 
     fclose(fp);

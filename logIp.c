@@ -138,7 +138,11 @@ int checkCountry(const char *targetIp) {
 
     while (fgets(line, sizeof(line), fp)) {
 
-        sscanf(line, "%[^,],%[^,],%s", country, start, end);
+        sscanf(line, "%99[^,],%[^,],%49s", country, start, end);
+
+	trim(country);
+	trim(start);
+	trim(end);
 
         int s[4], e[4];
         sscanf(start, "%d.%d.%d.%d", &s[0], &s[1], &s[2], &s[3]);

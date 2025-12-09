@@ -79,7 +79,7 @@ void startAuthInotifyWatcher(void) {
     out = fopen(OUT_LOG, "a");
     if (!out) {
         fprintf(stderr, "[ERROR] open %s: %s\n", OUT_LOG, strerror(errno));
-        return 1;
+        return;
     }
 
     /* 감시할 auth.log 열기 */
@@ -87,7 +87,7 @@ void startAuthInotifyWatcher(void) {
 	if(!in) {
 		fprintf(stderr, "[ERROR] open %s: %s\n", AUTH_LOG, strerror(errno));
 		fclose(out);
-		return 1;
+		return;
 	}
 
     fprintf(stderr, "[INFO] Watching %s\n", AUTH_LOG);
@@ -99,7 +99,7 @@ void startAuthInotifyWatcher(void) {
         fprintf(stderr, "[ERROR] inotify_init1: %s\n", strerror(errno));
         fclose(in);
 		fclose(out);
-        return 1;
+        return;
     }
 
     uint32_t mask = IN_MODIFY | IN_MOVE_SELF | IN_ATTRIB;
@@ -109,7 +109,7 @@ void startAuthInotifyWatcher(void) {
         close(ifd); 
 		fclose(in);
 		fclose(out);
-        return 1;
+        return;
     }
 
     /* 버퍼 초기화 */
@@ -191,6 +191,5 @@ cleanup:
     if (ifd >= 0) close(ifd);
     if (in) fclose(in);
     if (out) fclose(out);
-    return 0;
 }
 

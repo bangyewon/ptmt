@@ -32,8 +32,8 @@ sudo ipset create whitelist hash:ip
 ```
 ## 🔧 2. Run
 ```bash
-gcc ipset.c whiteList.c -o whiteList
-sudo ./whiteList
+gcc main.c whiteList.c ipset.c logIp.c riskEngine.c searchLog.c eventScore.c -o main
+sudo ./main
 ```
 ## 🔧 3. ptmt-collector Setup & Usage
 ```bash

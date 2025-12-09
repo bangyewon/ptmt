@@ -72,7 +72,7 @@ int extractIp(const char *filename) {
         char *trimmed = trim(line);
         if (strlen(trimmed) > 0) {
 
-            char *ip = strtok(trimmed, "\t\n");
+            char *ip = strtok(NULL, "\t\n");
             while (ip != NULL) {
 
                 if (isIp(ip)) {

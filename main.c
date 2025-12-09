@@ -66,9 +66,8 @@ int main() {
                res.event_type_str,
                res.base_score
         );
-
         // 여기서 logIp 호출
-
+	extractIp("/home/ubuntu/바탕화면/ptmt-main/logwatcher/ip-lines.log");
         // riskEngine 호출
     }
 

@@ -71,12 +71,13 @@ int main() {
 	int isCountry = extractIp("/home/ubuntu/바탕화면/ptmt-main/logwatcher/ip-lines.log");
 	if(isCountry == 1) {
 		ParsedEvent ev;
-		ev.ip = res.ip;
-		// 이거 str뭐로 설정해야함 ? 그냥 보내주면 되나 ..?
-		ev.event_type_str = "COUNTRY_IP";
-		risk_engine_process_event(&ev);
+		ev.ip             = res.ip;             // 이 이벤트의 IP
+        ev.event_type_str = res.event_type_str; // 원래 이벤트 타입 유지
+        ev.base_score     = res.base_score;     // eventScore에서 계산한 base_score
+
+        printf("[RISK] COUNTRY_IP DETECTED → riskEngine 누적 처리\n");
+        risk_engine_process_event(&ev);
 	}
-    }
 
     fclose(fp);
 	pthread_join(tid, NULL);

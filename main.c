@@ -86,3 +86,4 @@ int main() {
 	//logIp.c로 화이트리스트,국가 비교 ->if문으로 1이면 riskEngine.c넘어감
 
 }
+}

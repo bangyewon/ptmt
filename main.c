@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <pthread.h>
+#include <string.h>
 #include <unistd.h>
 #include "./whiteList.h"
 #include "./ipset.h"
@@ -6,7 +8,11 @@
 #include "./authInotifyIp.h"
 #include "./eventScore.h"
 
+void startAuthInotifyWatcher(void);
+static const char *IP_LINES_FILE = "./logwatcher/ip-lines.log";
+
 // 워처를 위한 쓰레드 함수
+// 컴파일 시 -lpthread 꼭 붙이기 !!
 static void* watcher_thread(void *arg) {
     (void)arg;
     startAuthInotifyWatcher();   // 여기서 무한 루프
@@ -25,13 +31,12 @@ int main() {
 	checkFile();
 
 	//eventScore에서 이벤트종류,ip파싱,점수매칭
-	const char *iplog = "./logwatcher/ip-lines.log";
     FILE *fp = NULL;
 
     while (!fp) {
-        fp = fopen(iplog, "r");
+        fp = fopen(IP_LINES_FILE, "r");
         if (!fp) {
-            printf("[main] Waiting for %s ...\n", iplog);
+            printf("[main] Waiting for %s ...\n", IP_LINES_FILE);
             usleep(500000); // 0.5초
         }
     }

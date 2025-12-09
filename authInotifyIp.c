@@ -15,6 +15,7 @@
 /* 기본 로그 경로 */
 static const char *AUTH_LOG = "/var/log/auth.log";
 static const char *OUT_LOG  = "./logwatcher/ip-lines.log";
+void startAuthInotifyWatcher(void);
 
 /* 파일 열기: EOF */
 static FILE* open_at_end(const char *path, long *pos_out) {
@@ -64,7 +65,7 @@ static int truncated(const char *path, long cur_pos) {
     return (st.st_size < cur_pos);
 }
 
-int main(void) {
+void startAuthInotifyWatcher(void) {
 	FILE *out = NULL;
 	FILE *in = NULL;
 	int ifd =-1;

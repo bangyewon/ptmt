@@ -6,7 +6,8 @@
 // riskEngine에 넘겨줄 최소 이벤트 
 typedef struct {
     const char *event_type_str; 
-    const char *ip;             
+    const char *ip;
+    int base_score;    
 } ParsedEvent;
 
 // 초기화

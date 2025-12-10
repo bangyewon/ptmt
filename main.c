@@ -21,22 +21,25 @@ static void* watcher_thread(void *arg) {
 }
 
 int main() {
-	// whiteList.c 실행 -> 파일 생성-> ipset까지 넘어가 ip table 설정 완료
-	checkFile();
-	printf("\n");
-        printf("============================================================\n\n");
-	printf("[ inotify 실행 시작합니다. ] \n");
-	printf("\n");
-        printf("============================================================\n\n");
-	pthread_t tid;
-	// inotify 워처 먼저 백그라운드 쓰레드로 실행
-	if (pthread_create(&tid, NULL, watcher_thread, NULL) != 0) {
+
+    // whiteList.c 실행 -> 파일 생성-> ipset까지 넘어가 ip table 설정 완료
+    checkFile();
+
+    printf("\n");
+    printf("============================================================\n\n");
+    printf("[ inotify 실행 시작합니다. ] \n");
+    printf("\n");
+    printf("============================================================\n\n");
+
+    pthread_t tid;
+
+    // inotify 워처 먼저 백그라운드 쓰레드로 실행
+    if (pthread_create(&tid, NULL, watcher_thread, NULL) != 0) {
         perror("[main] pthread_create");
         return 1;
     }
 
-
-	//eventScore에서 이벤트종류,ip파싱,점수매칭
+    // eventScore에서 이벤트종류, ip파싱, 점수매칭
     FILE *fp = NULL;
 
     while (!fp) {
@@ -46,10 +49,13 @@ int main() {
             usleep(500000); // 0.5초
         }
     }
-	fseek(fp, 0, SEEK_END);	
-	char line[2048];
-	// 새 로그 확인
-	while (1) {
+
+    fseek(fp, 0, SEEK_END);
+    char line[2048];
+
+    // 새 로그 확인
+    while (1) {
+
         long pos = ftell(fp);
         if (!fgets(line, sizeof(line), fp)) {
             clearerr(fp);
@@ -66,30 +72,34 @@ int main() {
             continue;
         }
 
-        // 파싱 성공 — 여기서 logIp → riskEngine으로 전달
+        // 파싱 성공 → logIp → riskEngine 전달
         printf("[EVENT] ip=%s type=%s base_score=%d\n",
                res.ip,
                res.event_type_str,
                res.base_score
         );
+
         // 여기서 logIp 호출
-	//logIp.c로 화이트리스트,국가 비교 ->if문으로 1이면 riskEngine.c넘어감
-	int isCountry = extractIp("/home/ubuntu/바탕화면/ptmt-main/logwatcher/ip-lines.log");
-	if(isCountry == 1) {
-		ParsedEvent ev;
-		ev.ip             = res.ip;             // 이 이벤트의 IP
-        ev.event_type_str = res.event_type_str; // 원래 이벤트 타입 유지
-        ev.base_score     = res.base_score;     // eventScore에서 계산한 base_score
+        // logIp.c로 화이트리스트, 국가 비교 → 1이면 riskEngine.c 이동
+        int isCountry = extractIp("/home/ubuntu/바탕화면/ptmt-main/logwatcher/ip-lines.log");
 
-        printf("[RISK] COUNTRY_IP DETECTED → riskEngine 누적 처리\n");
-        risk_engine_process_event(&ev);
-	}
+        if (isCountry == 1) {
 
-    fclose(fp);
-	pthread_join(tid, NULL);
-	blocklist();
-    return 0;
+            ParsedEvent ev;
+            ev.ip             = res.ip;             // 이벤트 IP
+            ev.event_type_str = res.event_type_str; // 이벤트 타입
+            ev.base_score     = res.base_score;     // 점수
 
+            printf("[RISK] COUNTRY_IP DETECTED → riskEngine 누적 처리\n");
+            risk_engine_process_event(&ev);
+        }
 
+        fclose(fp);
+//        pthread_join(tid, NULL);
+
+        blocklist();
+
+        return 0;
+    }
 }
-}
+

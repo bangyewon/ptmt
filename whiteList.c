@@ -26,47 +26,54 @@ int checkFile() {
 지 없는지 확인 
          * 있으면 파일 읽어서 ipset에 저장
          * 없으면 새로 생성
-         ‘trim’; have ‘c*/ 
+         */ 
         char *cwd; 
         char wd[BUFSIZ];
 
         cwd = getcwd(wd,sizeof(wd));
 	// 현재 위치경로 어디인지 확인 -> 임의로 현재경로로 비교함
-        if(strcom(cwd,"/home/ubuntu/바탕화면/ptmt-main") == 0) {
-                printf("해당 경로에 위치해 있습니다.: %s\n",cwd);
-		// whiteList.conf가 해당 경로에 있는지 확인
+        printf("\n============================================================\n");
+    printf(" [화이트리스트 환경 확인]\n"); 
+
+	if(strcom(cwd,"/home/ubuntu/바탕화면/ptmt-main") == 0) {
+    		// whiteList.conf가 해당 경로에 있는지 확인
+		 printf("  • 현재 작업 경로 : %s\n", cwd);
 		if(existFile(cwd) == 1) {
-			printf("whiteList.conf파일이 있습니다.\n");
+			printf("  • whiteList.conf 파일 확인 : 존재함\n");
+        printf("  → 기존 화이트리스트 파일을 사용합니다.\n");
+    }
 		}
+
 		else {
 			char answer;
 
-			printf("whiteList.conf파일이 없습니다.\n");
-			printf("whiteList.conf파일을 만들까요? (y / n): ");
-			scanf("%c", &answer);
+			 printf("  • whiteList.conf 파일 확인 : 없음\n");
+			 printf("  → 새로 생성하시겠습니까? (y / n): ");
+        		 scanf(" %c", &answer);
 			if(answer == 'y'|| answer == 'Y') {
-				printf("파일을 생성하는 중입니다.");
+				printf("\n  → 파일 생성 중...\n");
 				FILE *newFile = fopen("whiteList.conf","w+");
 				fprintf(newFile, "# 화이트리스트 ip를 적어주세요");
 				fclose(newFile);
-				printf("whiteList.conf파일 생성 완료: %s\n", cwd);
-				printf("whiteList.conf에 화이트리스트 ip를 적어주세요\n");
+				 printf("  → whiteList.conf 파일 생성 완료!\n");
+            printf("  → 파일에 허용할 IP 주소들을 입력하세요.\n");
 			} else {
-				printf("그럼 직접 파일을 생성하세요\n");	
+				printf("  → 파일 생성이 취소되었습니다.\n");	
 			}
 		}
-		
-        } else {
-                printf("현재 다른 경로에 위치해 있습니다.: %s\n",cwd);
+		printf("============================================================\n");
 
+        } else {
+               printf("  → ⚠️  프로젝트 경로가 아닙니다. 실행을 중단합니다.\n");
+        printf("============================================================\n\n");
         }
 	char ans;
-	printf("다했으면 Y : \n");
+	printf("\n화이트리스트 파일 수정이 끝났다면 Y를 입력하세요 : ");
 	scanf("%c",&ans);
-	if(ans == 'Y') {
-		printf("\n");
-		printf("ip를 넣는중 ~\n");
-		registerIp("whiteList.conf");
+	if(ans == 'Y' || ans == 'y') {
+		 printf("\n[INFO] IP 목록을 ipset에 등록 중...\n");
+        registerIp("whiteList.conf");
+        printf("[INFO] 등록 작업 완료!\n");
 	}
         return 1;
 }

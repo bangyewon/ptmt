@@ -5,4 +5,5 @@
 int registerIp(const char *filename);
 int addIp(const char *ip);
 char *trim(char *str);
+void blocklist();
 #endif

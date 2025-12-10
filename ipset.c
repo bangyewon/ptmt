@@ -49,3 +49,21 @@ int registerIp(const char *filename) {
 	fclose(fp);
 	return 0;
 }
+void blocklist() {
+	 printf("============================================================\n");
+
+	 printf("[현재 차단된 blocklist 목록 확인]\n");
+	  printf("============================================================\n");
+	  FILE *pp = popen("ipset list blocklist","r");
+	  if(!pp) {
+	  	printf("ipset blocklist 조회 실패\n");
+		return;
+	  }
+
+	  char buf[512];
+	  while(fgets(buf,sizeof(buf),pp)) {
+	  	printf("%s",buf);
+	  }
+	  pclose(pp);
+	   printf("============================================================\n");
+}

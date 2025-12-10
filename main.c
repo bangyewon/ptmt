@@ -73,6 +73,7 @@ int main() {
                res.base_score
         );
         // 여기서 logIp 호출
+	//logIp.c로 화이트리스트,국가 비교 ->if문으로 1이면 riskEngine.c넘어감
 	int isCountry = extractIp("/home/ubuntu/바탕화면/ptmt-main/logwatcher/ip-lines.log");
 	if(isCountry == 1) {
 		ParsedEvent ev;
@@ -86,9 +87,9 @@ int main() {
 
     fclose(fp);
 	pthread_join(tid, NULL);
+	blocklist();
     return 0;
 
-	//logIp.c로 화이트리스트,국가 비교 ->if문으로 1이면 riskEngine.c넘어감
 
 }
 }

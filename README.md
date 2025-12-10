@@ -35,8 +35,8 @@ sudo iptables -I INPUT -m set --match-set blocklist src -j DROP
 ```
 ## 🔧 2. Run
 ```bash
-gcc main.c whiteList.c ipset.c logIp.c riskEngine.c eventScore.c -o main
-sudo ./main
+gcc main.c whiteList.c ipset.c logIp.c authInotifyIp.c riskEngine.c eventScore.c -lpthread -o ptmt-collector
+sudo ./ptmt-collector
 ```
 ## 🔧 3. ptmt-collector Setup & Usage
 - 의존 패키지 설치

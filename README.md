@@ -22,13 +22,16 @@ authlog파일 기반 ip대역 추출 후 자동차단 프로그램
 
 # 🛠️ First-Time Setup (첫 사용 시 필수 설정)
 
-프로그램을 실행하기 위해서는 Linux 커널에 **화이트리스트용 ipset 세트**를 만들어야 함  
+프로그램을 실행하기 위해서는 Linux 커널에 **화이트리스트용/블랙리스트용 ipset 세트**를 만들어야 함  
 이 작업은 **최초 1회만 실행**
 
 ## 🔧 1. ipset 세트 생성
 
 ```bash
 sudo ipset create whitelist hash:ip
+
+sudo ipset create blocklist hash:net
+sudo iptables -I INPUT -m set --match-set blocklist src -j DROP
 ```
 ## 🔧 2. Run
 ```bash

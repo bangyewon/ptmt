@@ -74,7 +74,9 @@ int extractIp(const char *filename) {
             char *ip = strtok(trimmed, " \t\n");
             while (ip != NULL) {
                 if (isIp(ip)) {
-                    printf("추출된 ip : %s\n", ip);
+			 printf("============================================================\n");
+                    printf("\n[IP_ 분석 완료]추출된 IP : %s\n", ip);
+		    printf("\n");
 
                     int found = 0;
 
@@ -86,13 +88,19 @@ int extractIp(const char *filename) {
                     }
 
                     if (found) {
-                        printf("%s 는 ipset의 화이트리스트에 존재함.\n", ip);
+                       printf("============================================================\n");
+		     	 printf("\n[ 결과 ] %s 는 ipset의 화이트리스트에 존재함.\n", ip);
+			 printf("\n");
+			 printf("============================================================\n");
                     }
                     else {
-                        printf("%s 는 ipset의 화이트리스트에 존재하지 않음. 위험!\n", ip);
-                        printf("* * * * * \n");
-                        printf("*** 어떤 국가의 ip인지 확인중 ***\n");
-                        int countryFound = checkCountry(ip);
+			 printf("============================================================\n");
+                        printf("\n[ 결과 ] %s 는 ipset의 화이트리스트에 존재하지 않음. 위험!\n", ip);
+                        printf("\n"); 
+			printf("============================================================\n");
+                        printf("\n[ 탐색 중 ] 어떤 국가의 ip인지 확인합니다.\n");
+                        printf("\n");
+			int countryFound = checkCountry(ip);
 			if(countryFound == 1) {
 				fclose(fp);
 				return 1;
@@ -138,7 +146,7 @@ int checkCountry(const char *targetIp) {
 
     while (fgets(line, sizeof(line), fp)) {
 
-        sscanf(line, "%99[^,],%[^,],%49s", country, start, end);
+        sscanf(line, "%99[^,],%49[^,],%49[^,\n]", country, start, end);
 
 	trim(country);
 	trim(start);
@@ -148,14 +156,19 @@ int checkCountry(const char *targetIp) {
         sscanf(start, "%d.%d.%d.%d", &s[0], &s[1], &s[2], &s[3]);
         sscanf(end, "%d.%d.%d.%d", &e[0], &e[1], &e[2], &e[3]);
 
-        if (in_range(t, s, e)) {
-            printf("%s 는 [%s] 대역에 포함되어 있음 (%s ~ %s)\n",
-                   targetIp, country, start, end);
+         if (in_range(t, s, e)) {
+		 printf("============================================================\n"); 
+            printf("\n[탐색 결과]\n");
+            printf("  • 대상 IP        : %s\n", targetIp);
+            printf("  • 국가 이름      : %s\n", country);
+            printf("  • IP 대역        : %s ~ %s\n", start, end);
+	    printf("\n");
+            printf("============================================================\n");
             fclose(fp);
             return 1;
         }
     }
-
+     printf("[탐색 완료] %s 에 대한 국가 정보를 찾지 못했습니다.\n", targetIp);
     fclose(fp);
     return 0;
 }

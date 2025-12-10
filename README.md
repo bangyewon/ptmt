@@ -50,5 +50,8 @@ mkdir -p logwatcher
 make run
 sudo ptmt-collector
 ```
-
+- 예시 해킹로그
+```bash
+echo "Dec 10 12:34:56 ubuntu sshd[12345]: Failed password for invalid user admin from 95.215.104.0 port 54321 ssh2" | sudo tee -a /var/log/auth.log
+```
 

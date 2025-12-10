@@ -7,7 +7,6 @@ int addIp(const char *ip) {
 	char cmd[256];
 	snprintf(cmd,sizeof(cmd), "ipset add whitelist %s",ip);
 	int success = system(cmd);
-	printf("%s\n",ip); //디버깅용
 	return (success == 0);
 }
 
@@ -46,7 +45,6 @@ int registerIp(const char *filename) {
 			}
 		addIp(trimmed);
 		}
-	printf("ip등록 완료"); //디버깅용
 	
 	fclose(fp);
 	return 0;

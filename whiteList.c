@@ -38,7 +38,6 @@ int checkFile() {
     printf("\n============================================================\n");
     printf(" [화이트리스트 환경 확인]\n");
 
-    // ⚠️ 여기 괄호 / else 구조 완전히 고쳐줌
     if (strcom(cwd, "/home/ubuntu/바탕화면/ptmt-main") == 0) {
 
         printf("  • 현재 작업 경로 : %s\n", cwd);
@@ -53,12 +52,11 @@ int checkFile() {
 
             printf("  • whiteList.conf 파일 확인 : 없음\n");
             printf("  → 새로 생성하시겠습니까? (y / n): ");
-            scanf(" %c", &answer); // 공백으로 입력 버퍼 문제 해결
+            scanf(" %c", &answer); 
 
             if (answer == 'y' || answer == 'Y') {
                 printf("\n  → 파일 생성 중...\n");
                 FILE *newFile = fopen("whiteList.conf", "w+");
-                fprintf(newFile, "# 화이트리스트 ip를 적어주세요");
                 fclose(newFile);
                 printf("  → whiteList.conf 파일 생성 완료!\n");
                 printf("  → 파일에 허용할 IP 주소들을 입력하세요.\n");
@@ -72,21 +70,23 @@ int checkFile() {
     } 
     
     else {
-        // 잘못된 위치일 때 출력되는 부분
-        printf("  → ⚠️  프로젝트 경로가 아닙니다. 실행을 중단합니다.\n");
+        printf("  →  프로젝트 경로가 아닙니다. 실행을 중단합니다.\n");
         printf("============================================================\n\n");
-        return 0; // 경로가 틀리면 여기서 끝내는 게 맞음
+        return 0;
     }
 
-    // 파일 수정 후 진행
+    // 파일 수정 후
     char ans;
     printf("\n화이트리스트 파일 수정이 끝났다면 Y를 입력하세요 : ");
     scanf(" %c", &ans);
+    printf("\n");
+        printf("============================================================\n\n");
 
     if (ans == 'Y' || ans == 'y') {
-        printf("\n[INFO] IP 목록을 ipset에 등록 중...\n");
+        printf("\n[ 진행 중 ] IP 목록을 ipset에 등록 중...\n");
         registerIp("whiteList.conf");
-        printf("[INFO] 등록 작업 완료!\n");
+        printf("============================================================\n\n");
+        printf("[ 진행 완료 ] 등록 작업 완료!\n");
     }
 
     return 1;

@@ -115,16 +115,20 @@ int extractIp(const char *filename) {
     fclose(fp);
     return 0;
 }
-
-// 범위 체크 함수
+// ip 비교 위한 long으로 ip변환하기 
+unsigned long longIp(int ip[4]) {
+	return ((unsigned long)ip[0] << 24) |
+		((unsigned long)ip[1] << 16) |
+		((unsigned long)ip[2] << 8) |
+		(unsigned long)ip[3];
+}
+// ip 범위 체크
 int in_range(int t[4], int s[4], int e[4]) {
-    for (int i = 0; i < 4; i++) {
-        if (t[i] < s[i]) return 0;
-        if (t[i] > e[i]) return 0;
+	unsigned long T = longIp(t);
+	unsigned long S = longIp(s);
+	unsigned long E  = longIp(e);
+	return (T >= S && T <= E);
 
-        if (t[i] > s[i] && t[i] < e[i]) return 1;
-    }
-    return 1;
 }
 
 // 국가 IP 대역 판별

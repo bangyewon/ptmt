@@ -11,14 +11,15 @@ int in_range(int t[4], int s[4], int e[4]);
 
 // 문자열이 IP인지 검사
 int isIp(const char *str) {
-    int dot = 0;
-    int len = strlen(str);
+	int a,b,c,d;
+	if(sscanf(str, "%d.%d.%d.%d",&a,&b,&c,&d) != 4)
+		return 0
+	if (a < 0 || a > 255) return 0;
+	if (b < 0 || b > 255) return 0;
+	if (c < 0 || c > 255) return 0;
+	if (d < 0 || d > 255) return 0;
 
-    for (int i = 0; i < len; i++) {
-        if (str[i] == '.') dot++;
-        else if (!isdigit((unsigned char)str[i])) return 0;
-    }
-    return dot == 3;
+	return 1;
 }
 
 // ipset 화이트리스트 추출
